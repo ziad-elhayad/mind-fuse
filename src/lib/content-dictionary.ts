@@ -28,7 +28,7 @@ export const contentDictionary = {
       ctaText: "Want to partner with us?",
       ctaButton: "Start a Project",
     },
-    logoAlt: "Mind Fuse Marketing Agency",
+    logoAlt: "Mind Fuse Agency",
   },
 
   // ==================== HOME PAGE ====================
@@ -38,7 +38,7 @@ export const contentDictionary = {
       headline: {
         line1: "Market Your Brand",
       },
-      description: "AN Marketing Agency — Expert Strategy, Creative Campaigns, Results-Driven Solutions. Trusted by Businesses Worldwide.",
+      description: "Mind Fuse Agency — Expert Strategy, Creative Campaigns, Results-Driven Solutions. Trusted by Businesses Worldwide.",
       primaryButton: "Market Your Brand",
       secondaryButton: "Contact Us",
       scrollIndicator: "Scroll",
@@ -55,9 +55,9 @@ export const contentDictionary = {
       cacValue: "-43%",
     },
     aboutUs: {
-      sectionTitle: "About AN Marketing Agency",
+      sectionTitle: "About Mind Fuse Agency",
       content: "A brief overview of who the agency is, its founding story, and its mission to help businesses grow through smart digital marketing strategies.",
-      keyMessage: "AN Marketing Agency combines expert strategy, creative execution, and data-driven results to help brands succeed in the competitive Egyptian and global market.",
+      keyMessage: "Mind Fuse Agency combines expert strategy, creative execution, and data-driven results to help brands succeed in the competitive Egyptian and global market.",
       ctaButton: "Our Services",
     },
     services: {
@@ -67,7 +67,7 @@ export const contentDictionary = {
       exploreButton: "Learn More",
     },
     whyUs: {
-      sectionTitle: "Why AN Marketing Agency",
+      sectionTitle: "Why Mind Fuse Agency",
       subtitle: "Built for Brands That Want Real Growth",
       points: [
         "360° integrated marketing solutions",
@@ -147,8 +147,8 @@ export const contentDictionary = {
   about: {
     hero: {
       sectionLabel: "About Us",
-      title: "AN Marketing Agency",
-      description: "AN Marketing Agency is a 360° marketing agency providing fully integrated marketing solutions designed to help brands grow, scale, and compete in today's fast-moving digital landscape. We don't believe in isolated tactics or short-term wins. Instead, we build complete marketing ecosystems that align strategy, creativity, technology, and performance to achieve real business results.",
+      title: "Mind Fuse Agency",
+      description: "Mind Fuse Agency is a 360° marketing agency providing fully integrated marketing solutions designed to help brands grow, scale, and compete in today's fast-moving digital landscape. We don't believe in isolated tactics or short-term wins. Instead, we build complete marketing ecosystems that align strategy, creativity, technology, and performance to achieve real business results.",
     },
     mission: {
       title: "Our Mission",
@@ -232,7 +232,7 @@ export const contentDictionary = {
     ceoQuote: {
       name: "Ahmed Nabil",
       role: "CEO",
-      quote: "Marketing is not about visibility alone—it's about building systems that drive growth. At AN Marketing Agency, we focus on strategy, integration, and measurable impact to help brands scale with confidence.",
+      quote: "Marketing is not about visibility alone—it's about building systems that drive growth. At Mind Fuse Agency, we focus on strategy, integration, and measurable impact to help brands scale with confidence.",
     },
     cta: {
       title: "Let's turn your marketing into a growth engine.",
@@ -249,7 +249,7 @@ export const contentDictionary = {
         line1: "Comprehensive Digital",
         line2: "Services.",
       },
-      description: "Based on the service models of AN Marketing, we structure campaign planning, creative visual assets, performance marketing, and modern React development.",
+      description: "Based on the service models of Mind Fuse, we structure campaign planning, creative visual assets, performance marketing, and modern React development.",
     },
     sectionLabel: "What We Deliver",
     sectionTitle: "Core Service Pillars",
@@ -262,6 +262,14 @@ export const contentDictionary = {
       description: "We structure custom service scopes tailored to your industry, target audience size, and current positioning.",
       button: "Start Strategy Assessment",
     },
+  },
+
+  // ==================== PARTNER SECTION ====================
+  partner: {
+    sectionLabel: "Strategic Partnership",
+    sectionTitle: "Strategic Technology Partner",
+    sectionDescription: "We collaborate with specialized technology partners to deliver comprehensive digital solutions that combine business expertise with technical excellence.",
+    visitButton: "Visit Website",
   },
 
   // ==================== CONTACT PAGE ====================
@@ -339,7 +347,7 @@ export const contentDictionary = {
       button: "Join",
     },
     bottom: {
-      copyright: (year: number) => `© ${year} Mind Fuse. All rights reserved. Content based on AN Marketing.`,
+      copyright: (year: number) => `© ${year} Mind Fuse. All rights reserved.`,
       privacyPolicy: "Privacy Policy",
       termsOfService: "Terms of Service",
     },

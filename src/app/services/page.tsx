@@ -36,8 +36,8 @@ export default function Services() {
               <span className="text-xs font-semibold uppercase tracking-widest text-[#06599B]">{contentDictionary.services.hero.sectionLabel}</span>
             </FadeIn>
             <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
-              <TextReveal text={contentDictionary.services.hero.headline.line1} className="block text-[#1A1A1A]" delay={0.15} />
-              <TextReveal text={contentDictionary.services.hero.headline.line2} className="text-gradient-primary-secondary" delay={0.45} />
+              <TextReveal text={contentDictionary.services.hero.headline.line1} className="block text-[#06599B]" delay={0.15} />
+              <TextReveal text={contentDictionary.services.hero.headline.line2} className="text-[#06599B]" delay={0.45} />
             </h1>
             <FadeIn delay={0.65} direction="up">
               <p className="text-[#6B7280] text-lg md:text-xl leading-relaxed">
@@ -53,6 +53,9 @@ export default function Services() {
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-10">
           {SERVICES.map((service, idx) => {
             const Icon = getServiceIcon(service.iconName);
+            if (!Icon) {
+              console.warn(`Missing icon for service: ${service.title}, iconName: ${service.iconName}`);
+            }
             return (
               <FadeIn key={service.id} delay={idx * 0.08} direction="up">
                 <HoverCard scale={1.01} lift={-6}>
@@ -66,13 +69,13 @@ export default function Services() {
                     <div className="flex-1 flex flex-col gap-6">
                       <div className="flex items-center gap-4">
                         <motion.div
-                          className={`w-12 h-12 rounded-xl bg-gradient-to-tr ${service.highlightColor} flex items-center justify-center text-white shrink-0`}
+                          className={`w-12 h-12 rounded-xl bg-[#06599B] flex items-center justify-center text-white shrink-0`}
                           whileHover={{ rotate: 8, scale: 1.1 }}
                           transition={{ type: "spring", stiffness: 300 }}
                         >
-                          <Icon className="w-6 h-6" />
+                          {Icon && <Icon className="w-6 h-6" />}
                         </motion.div>
-                        <h2 className="text-2xl md:text-3xl font-bold text-[#1A1A1A] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#1A1A1A] group-hover:to-[#6B7280] transition-all duration-300">
+                        <h2 className="text-2xl md:text-3xl font-bold text-[#06599B] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#06599B] group-hover:to-[#2D7FC0] transition-all duration-300">
                           {service.title}
                         </h2>
                       </div>

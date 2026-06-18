@@ -48,8 +48,17 @@ export interface TeamMember {
 }
 
 export interface Metric {
-  value: string;
   label: string;
+  value: string;
+}
+
+export interface Partner {
+  id: string;
+  name: string;
+  logo: string;
+  description: string;
+  website: string;
+  highlightColor: string;
 }
 
 export const SERVICES: Service[] = [
@@ -163,7 +172,7 @@ export const SERVICES: Service[] = [
       { title: "03. Optimization", description: "Bidding dynamically, testing creative variations, and updating negative keywords list daily." },
       { title: "04. Expansion", description: "Allocating budgets toward top-performing segments and introducing advanced lookalike lookups." }
     ],
-    highlightColor: "from-[#044A80] to-[#2D7FC0]"
+    highlightColor: "from-[#06599B] to-[#2D7FC0]"
   },
   {
     id: "website-development",
@@ -191,7 +200,7 @@ export const SERVICES: Service[] = [
       { title: "03. Frontend Engineering", description: "Writing structured React components with TypeScript types and Framer Motion dynamics." },
       { title: "04. Testing & Deployment", description: "Verifying cross-device responsiveness, auditing load times, and launching to global servers." }
     ],
-    highlightColor: "from-brand-secondary to-brand-primary"
+    highlightColor: "from-[#06599B] to-[#2D7FC0]"
   },
   {
     id: "social-media",
@@ -326,6 +335,18 @@ export function getServiceIcon(name: string) {
     case 'Compass': return Compass;
     case 'LineChart': return LineChart;
     case 'Megaphone': return Megaphone;
-    default: return Lightbulb;
+    default: console.warn(`Unknown icon name: ${name}`); return Lightbulb;
   }
 }
+
+// Partners Data
+export const PARTNERS: Partner[] = [
+  {
+    id: "tech-solutions",
+    name: "Tech Solutions",
+    logo: "/tech-solution-logo/tech-logo.jpeg",
+    description: "We collaborate with Tech Solutions to deliver advanced digital solutions, custom software development, ERP implementation, web applications, business automation, and technology consulting services. This partnership enables us to provide end-to-end solutions that combine business expertise with technical excellence.",
+    website: "https://tech-solution-six-orpin.vercel.app",
+    highlightColor: "from-[#06599B] to-[#2D7FC0]"
+  }
+];

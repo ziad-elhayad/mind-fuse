@@ -3,7 +3,7 @@
 import React, { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { SERVICES, PROJECTS, METRICS, getServiceIcon } from "@/lib/data";
+import { SERVICES, PROJECTS, METRICS, PARTNERS, getServiceIcon } from "@/lib/data";
 import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
   TextReveal,
@@ -81,7 +81,7 @@ export default function Home() {
 
             {/* Main headline with text reveal */}
             <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.02]">
-              <TextReveal text={contentDictionary.home.hero.headline.line1} className="block text-[#1A1A1A]" delay={0.15} />
+              <TextReveal text={contentDictionary.home.hero.headline.line1} className="block text-[#06599B]" delay={0.15} />
             </h1>
 
             <FadeIn delay={0.6} direction="up">
@@ -128,7 +128,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <FadeIn direction="left">
               <div className="flex flex-col gap-6">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-[#1A1A1A]">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-[#06599B]">
                   {contentDictionary.home.aboutUs.sectionTitle}
                 </h2>
                 <p className="text-[#6B7280] text-base leading-relaxed">
@@ -173,7 +173,7 @@ export default function Home() {
                 <span className="text-xs font-semibold uppercase tracking-widest text-[#06599B]">{contentDictionary.home.services.sectionLabel}</span>
               </FadeIn>
               <FadeIn delay={0.1} direction="up">
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#1A1A1A]">
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#06599B]">
                   {contentDictionary.home.services.sectionTitle}
                 </h2>
               </FadeIn>
@@ -188,6 +188,9 @@ export default function Home() {
           <div className="flex flex-col gap-8">
             {SERVICES.map((service, index) => {
               const Icon = getServiceIcon(service.iconName);
+              if (!Icon) {
+                console.warn(`Missing icon for service: ${service.title}, iconName: ${service.iconName}`);
+              }
               return (
                 <motion.div
                   key={service.id}
@@ -202,7 +205,7 @@ export default function Home() {
                 >
                   <div className="glass-card shimmer-card rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center">
                     <div className="flex-1 flex flex-col gap-4">
-                      <h3 className="text-2xl md:text-3xl font-bold text-[#1A1A1A]">{service.title}</h3>
+                      <h3 className="text-2xl md:text-3xl font-bold text-[#06599B]">{service.title}</h3>
                       <p className="text-[#6B7280] text-base leading-relaxed">{service.shortDescription}</p>
                       <Link href={`/services/${service.slug}`} className="text-sm font-semibold uppercase tracking-wider text-[#06599B] hover:text-[#2D7FC0] transition-colors flex items-center gap-2 group/link w-fit mt-2">
                         {contentDictionary.home.services.exploreButton} <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
@@ -213,9 +216,9 @@ export default function Home() {
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: index * 0.15 + 0.2 }}
-                      className={`w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-tr ${service.highlightColor} flex items-center justify-center text-white shadow-xl shrink-0`}
+                      className={`w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-[#06599B] flex items-center justify-center text-white shadow-xl shrink-0`}
                     >
-                      <Icon className="w-12 h-12 md:w-16 md:h-16" />
+                      {Icon && <Icon className="w-12 h-12 md:w-16 md:h-16" />}
                     </motion.div>
                   </div>
                 </motion.div>
@@ -225,12 +228,70 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── STRATEGIC TECHNOLOGY PARTNER ───────────────────── */}
+      <section className="relative z-10 py-20 md:py-28">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="text-center max-w-2xl mx-auto mb-16 flex flex-col gap-4">
+            <FadeIn direction="up">
+              <span className="text-sm font-semibold uppercase tracking-wider text-[#06599B]">{contentDictionary.partner.sectionLabel}</span>
+            </FadeIn>
+            <FadeIn delay={0.1}>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#06599B]">{contentDictionary.partner.sectionTitle}</h2>
+            </FadeIn>
+            <FadeIn delay={0.2}>
+              <p className="text-[#6B7280] text-lg md:text-xl">{contentDictionary.partner.sectionDescription}</p>
+            </FadeIn>
+          </div>
+
+          <div className="flex flex-col gap-8">
+            {PARTNERS.map((partner, index) => (
+              <FadeIn key={partner.id} delay={index * 0.1} direction="up">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  className="group relative rounded-3xl border border-[#06599B]/15 bg-white/90 backdrop-blur-md overflow-hidden hover:border-[#06599B]/30 transition-all duration-500 p-8 md:p-16 flex flex-col md:flex-row items-center gap-8 md:gap-16 shimmer-card"
+                >
+                  {/* Accent bar */}
+                  <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${partner.highlightColor} rounded-r-full`} />
+                  {/* Hover glow */}
+                  <div className={`absolute top-0 right-0 w-96 h-96 rounded-full bg-gradient-to-bl ${partner.highlightColor} opacity-0 group-hover:opacity-[0.06] blur-3xl transition-opacity duration-700 pointer-events-none`} />
+
+                  {/* Logo */}
+                  <div className="relative w-full md:w-48 h-32 flex items-center justify-center bg-white rounded-2xl border border-[#06599B]/10 group-hover:border-[#06599B]/20 transition-colors shrink-0">
+                    <img src={partner.logo} alt={partner.name} className="h-50 w-auto object-contain" />
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 flex flex-col gap-4">
+                    <h3 className="text-3xl md:text-4xl font-bold text-[#06599B] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#06599B] group-hover:to-[#2D7FC0] transition-all duration-300">
+                      {partner.name}
+                    </h3>
+                    <p className="text-[#6B7280] text-lg leading-relaxed">{partner.description}</p>
+                  </div>
+
+                  {/* CTA Button */}
+                  <Link
+                    href={partner.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/btn relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full text-sm font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-[#06599B] to-[#2D7FC0] hover:from-[#0A6AB8] hover:to-[#06599B] transition-all duration-300 shadow-lg hover:shadow-xl shrink-0"
+                  >
+                    {contentDictionary.partner.visitButton}
+                    <ArrowUpRight className="w-5 h-5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                  </Link>
+                </motion.div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── WHY AN MARKETING AGENCY ───────────────────────── */}
       <section className="relative z-10 py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="text-center max-w-2xl mx-auto mb-16 flex flex-col gap-4">
             <FadeIn direction="up">
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#1A1A1A]">{contentDictionary.home.whyUs.sectionTitle}</h2>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[#06599B]">{contentDictionary.home.whyUs.sectionTitle}</h2>
             </FadeIn>
             <FadeIn delay={0.1}>
               <p className="text-[#6B7280] text-lg md:text-xl">{contentDictionary.home.whyUs.subtitle}</p>

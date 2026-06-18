@@ -34,7 +34,7 @@ export default function About() {
             <span className="text-xs font-semibold uppercase tracking-widest text-[#06599B]">{contentDictionary.about.hero.sectionLabel}</span>
           </FadeIn>
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] mt-4">
-            <TextReveal text={contentDictionary.about.hero.title} className="block text-[#1A1A1A]" delay={0.15} />
+            <TextReveal text={contentDictionary.about.hero.title} className="block text-[#06599B]" delay={0.15} />
           </h1>
           <FadeIn delay={0.65} direction="up">
             <p className="text-[#6B7280] text-lg md:text-xl leading-relaxed max-w-3xl mt-6">
@@ -49,7 +49,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <FadeIn direction="up">
             <div className="flex flex-col gap-4">
-              <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A1A]">{contentDictionary.about.mission.title}</h2>
+              <h2 className="text-3xl md:text-5xl font-bold text-[#06599B]">{contentDictionary.about.mission.title}</h2>
               <p className="text-[#6B7280] text-base leading-relaxed max-w-4xl">{contentDictionary.about.mission.content}</p>
             </div>
           </FadeIn>
@@ -61,7 +61,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <FadeIn direction="up">
             <div className="flex flex-col gap-4">
-              <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A1A]">{contentDictionary.about.vision.title}</h2>
+              <h2 className="text-3xl md:text-5xl font-bold text-[#06599B]">{contentDictionary.about.vision.title}</h2>
               <p className="text-[#6B7280] text-base leading-relaxed max-w-4xl">{contentDictionary.about.vision.content}</p>
             </div>
           </FadeIn>
@@ -72,13 +72,13 @@ export default function About() {
       <div className="relative z-10 py-12">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <FadeIn direction="up">
-            <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A1A] mb-8">{contentDictionary.about.values.title}</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-[#06599B] mb-8">{contentDictionary.about.values.title}</h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {contentDictionary.about.values.values.map((value, index) => (
               <FadeIn key={value.title} direction="up" delay={index * 0.1}>
                 <div className="flex flex-col gap-3">
-                  <h3 className="text-xl font-bold text-[#1A1A1A]">{value.title}</h3>
+                  <h3 className="text-xl font-bold text-[#06599B]">{value.title}</h3>
                   <p className="text-[#6B7280] text-sm leading-relaxed">{value.description}</p>
                 </div>
               </FadeIn>
@@ -91,7 +91,7 @@ export default function About() {
       <div className="relative z-10 py-12">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <FadeIn direction="up">
-            <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A1A] mb-8">{contentDictionary.about.differentiators.title}</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-[#06599B] mb-8">{contentDictionary.about.differentiators.title}</h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {contentDictionary.about.differentiators.items.map((item, index) => (
@@ -99,7 +99,7 @@ export default function About() {
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-[#06599B]" />
-                    <h3 className="text-lg font-bold text-[#1A1A1A]">{item.title}</h3>
+                    <h3 className="text-lg font-bold text-[#06599B]">{item.title}</h3>
                   </div>
                   <p className="text-[#6B7280] text-sm leading-relaxed pl-7">{item.description}</p>
                 </div>
@@ -113,7 +113,7 @@ export default function About() {
       <div className="relative z-10 py-12">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <FadeIn direction="up">
-            <h2 className="text-3xl md:text-5xl font-bold text-[#1A1A1A] mb-8">{contentDictionary.about.approach.title}</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-[#06599B] mb-8">{contentDictionary.about.approach.title}</h2>
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {contentDictionary.about.approach.steps.map((step, index) => (
@@ -123,7 +123,7 @@ export default function About() {
                     <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#06599B] to-[#2D7FC0] flex items-center justify-center text-white text-sm font-bold">
                       {index + 1}
                     </div>
-                    <h3 className="text-lg font-bold text-[#1A1A1A]">{step.step}</h3>
+                    <h3 className="text-lg font-bold text-[#06599B]">{step.step}</h3>
                   </div>
                   <p className="text-[#6B7280] text-sm leading-relaxed pl-10">{step.description}</p>
                 </div>

@@ -40,7 +40,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
         {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group z-50">
-            <div className="relative w-32 md:w-40 h-10 flex items-center group-hover:scale-105 transition-transform duration-300">
+            <div className="relative w-40 md:w-52 h-14 flex items-center group-hover:scale-105 transition-transform duration-300 bg-transparent">
               <img src="/mindFuseLogo.png" alt={contentDictionary.navigation.logoAlt} className="w-full h-full object-contain object-left" />
             </div>
           </Link>
@@ -53,13 +53,13 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="relative py-2 text-sm font-medium tracking-wide text-[#1A1A1A] hover:text-[#06599B] transition-colors duration-300"
+                className="relative py-2 text-base font-semibold tracking-wide text-white hover:text-[#E8F4FD] transition-colors duration-300"
               >
                 {link.name}
                 {isActive && (
                   <motion.span
                     layoutId="activeNavIndicator"
-                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#06599B] to-[#2D7FC0] rounded-full"
+                    className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#E8F4FD] to-[#2D7FC0] rounded-full"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -72,19 +72,19 @@ export default function Navbar() {
         <div className="hidden md:flex items-center">
           <Link
             href="/contact"
-            className="group relative inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-[#06599B] border border-[#06599B] hover:bg-[#0A6AB8] hover:border-[#0A6AB8] overflow-hidden transition-all duration-300"
+            className="group relative inline-flex items-center gap-1.5 px-6 py-3 rounded-full text-sm font-semibold uppercase tracking-wider text-white bg-white/20 border border-white/30 hover:bg-white/30 hover:border-white/50 overflow-hidden transition-all duration-300"
           >
             <span className="relative z-10 flex items-center gap-1.5">
               {contentDictionary.navigation.ctaButton} <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </span>
-            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-[#0A6AB8] to-[#2D7FC0] transition-transform duration-500 ease-out" />
+            <div className="absolute inset-0 -translate-x-full group-hover:translate-x-0 bg-gradient-to-r from-white/30 to-white/20 transition-transform duration-500 ease-out" />
           </Link>
         </div>
 
         {/* Mobile Toggle Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden flex items-center justify-center p-2 rounded-lg text-[#1A1A1A] hover:text-[#06599B] bg-white/80 border border-[#06599B]/20 hover:border-[#06599B]/40 transition-colors"
+          className="md:hidden flex items-center justify-center p-2 rounded-lg text-white hover:text-[#E8F4FD] bg-white/20 border border-white/30 hover:border-white/50 transition-colors"
           aria-label={contentDictionary.common.accessibility.toggleMenu}
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -117,7 +117,7 @@ export default function Navbar() {
                         isActive
                           ? "text-gradient-brand"
                           : "text-[#1A1A1A] hover:text-[#06599B]"
-                      } transition-colors`}
+                      } transition-colors text-2xl font-bold`}
                     >
                       {link.name}
                     </Link>

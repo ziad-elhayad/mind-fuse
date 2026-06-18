@@ -74,7 +74,7 @@ export default function Contact() {
               </FadeIn>
               <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
                 <TextReveal text="Let's construct" className="block text-[#06599B]" delay={0.2} />
-                <TextReveal text="your project." className="block text-gradient-primary-secondary" delay={0.4} />
+                <TextReveal text="your project." className="block text-[#06599B]" delay={0.4} />
               </h1>
               <FadeIn delay={0.6} direction="up">
                 <p className="text-[#6B7280] text-base leading-relaxed max-w-sm">

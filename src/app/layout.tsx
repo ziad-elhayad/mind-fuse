@@ -18,14 +18,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mind Fuse | Premium Marketing & Digital Engineering Agency",
+  title: "AN Marketing | Premium Marketing & Digital Engineering Agency",
   description:
-    "Mind Fuse scales ambitious brands through high-performance marketing strategies, brand identity design, creative video production, search optimization, and modern React/Next.js platforms.",
+    "AN Marketing scales ambitious brands through high-performance marketing strategies, brand identity design, creative video production, search optimization, and modern React/Next.js platforms.",
   keywords:
     "Marketing agency, brand identity, digital marketing, website development, content production, social media management, strategic consulting",
-  authors: [{ name: "Mind Fuse" }],
+  authors: [{ name: "AN Marketing" }],
   openGraph: {
-    title: "Mind Fuse | Premium Marketing & Digital Engineering Agency",
+    title: "AN Marketing | Premium Marketing & Digital Engineering Agency",
     description:
       "Creative strategy meets modern software engineering. We scale business revenue and build unique digital identities.",
     type: "website",
