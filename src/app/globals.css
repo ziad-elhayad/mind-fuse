@@ -1,26 +1,273 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* MindFuse Brand Color Palette */
+  --color-brand-primary: #06599B; /* MindFuse Blue - Primary Brand Color */
+  --color-brand-hover: #0A6AB8; /* Primary Hover */
+  --color-brand-dark: #044A80; /* Dark Brand Shade */
+  --color-brand-accent: #2D7FC0; /* Light Accent Blue - Dominant Background */
+  --color-brand-light: #E8F4FD; /* Light variation of accent blue */
+  --color-brand-lighter: #F0F8FF; /* Even lighter variation */
+  
+  /* Neutral Colors */
+  --color-white: #FFFFFF;
+  --color-light-bg: #F5F7FA; /* Light Background */
+  --color-text: #1A1A1A; /* Text */
+  --color-text-muted: #6B7280; /* Muted text */
+  
+  --background: #2D7FC0; /* Light Accent Blue - Dominant background */
+  --foreground: #1A1A1A; /* Text color */
+  
+  --font-sans: var(--font-geist-sans), Inter, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(135deg, #D4E8F7 0%, #E8F4FD 50%, #D9E8F5 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  cursor: none; /* hide default cursor — replaced by custom cursor */
+}
+
+/* Restore default cursor on touch devices */
+@media (hover: none) {
+  body { cursor: auto; }
+}
+
+/* ─── Custom Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #E8F4FD; }
+::-webkit-scrollbar-thumb { background: #06599B; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #0A6AB8; }
+
+/* ─── Selection ─────────────────────────────────────── */
+::selection {
+  background: rgba(45, 127, 192, 0.35);
+  color: #06599B;
+}
+
+/* ─── Glass Utility ─────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: none;
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease;
+}
+.glass-card:hover {
+  border-color: rgba(6, 89, 155, 0.35);
+  box-shadow: 0 20px 40px -12px rgba(6, 89, 155, 0.15);
+  transform: translateY(-4px);
+}
+
+/* ─── Gradient Text ─────────────────────────────────── */
+.text-gradient-brand {
+  background: linear-gradient(135deg, #044A80 0%, #06599B 50%, #2D7FC0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-primary {
+  background: linear-gradient(135deg, #06599B 0%, #2D7FC0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-secondary {
+  background: linear-gradient(135deg, #2D7FC0 0%, #4A8FD0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Ambient Glows ─────────────────────────────────── */
+.ambient-glow-1 {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(6, 89, 155, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(40px);
+}
+.ambient-glow-2 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(45, 127, 192, 0.12) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(50px);
+}
+
+/* ─── Grid Background Overlay ───────────────────────── */
+.grid-overlay {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(6, 89, 155, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 89, 155, 0.08) 1px, transparent 1px);
+}
+
+/* ─── Noise Texture Overlay ─────────────────────────── */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+/* ─── CSS Keyframes ─────────────────────────────────── */
+
+/* Slow drift for decorative blobs */
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -20px) scale(1.05); }
+  66%       { transform: translate(-20px, 15px) scale(0.97); }
+}
+
+/* Pulsing glow ring */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(6, 89, 155, 0); }
+  50%       { box-shadow: 0 0 0 12px rgba(6, 89, 155, 0); }
+}
+
+/* Shimmer sweep */
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* Spin slow */
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+/* Horizontal scroll for marquee (CSS fallback) */
+@keyframes marquee-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* Gradient shift for hero bg */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* Border glow animation */
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(6, 89, 155, 0.25); }
+  50%       { border-color: rgba(45, 127, 192, 0.45); }
+}
+
+/* Text shimmer */
+@keyframes text-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Float gentle */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-14px); }
+}
+
+/* Ping scale */
+@keyframes ping-scale {
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+/* ─── Animation Utility Classes ─────────────────────── */
+
+.animate-drift        { animation: drift 14s ease-in-out infinite; }
+.animate-drift-slow   { animation: drift 22s ease-in-out infinite reverse; }
+.animate-spin-slow    { animation: spin-slow 60s linear infinite; }
+.animate-float        { animation: float 5s ease-in-out infinite; }
+.animate-float-slow   { animation: float 7s ease-in-out infinite; }
+.animate-border-glow  { animation: border-glow 3s ease-in-out infinite; }
+.animate-gradient-shift {
+  background-size: 300% 300%;
+  animation: gradient-shift 8s ease infinite;
+}
+.animate-text-shimmer {
+  background: linear-gradient(90deg, #044A80, #06599B, #2D7FC0, #044A80);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer 4s linear infinite;
+}
+
+/* ─── Shimmer Card Effect ───────────────────────────── */
+.shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,0.04) 20%,
+    rgba(255,255,255,0.08) 60%,
+    rgba(255,255,255,0) 100%
+  );
+  transition: none;
+  pointer-events: none;
+}
+.shimmer-card:hover::after {
+  animation: shimmer 1.2s ease-out forwards;
+}
+
+/* ─── Image Zoom Hover ──────────────────────────────── */
+.image-zoom {
+  overflow: hidden;
+}
+.image-zoom img,
+.image-zoom > div {
+  transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+.image-zoom:hover img,
+.image-zoom:hover > div {
+  transform: scale(1.06);
+}
+
+/* ─── Section gradient separator ───────────────────── */
+.section-fade-top {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+}
+.section-fade-bottom {
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, black 15%);
+  mask-image: linear-gradient(to top, transparent 0%, black 15%);
+}
+
+/* ─── Button transitions ────────────────────────────── */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 12px 30px -8px rgba(6, 89, 155, 0.35);
+}
+.btn-primary:active {
+  transform: translateY(0);
 }
