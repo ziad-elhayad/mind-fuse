@@ -11,7 +11,6 @@ import {
   FadeIn,
   FloatingElement,
   ParallaxLayer,
-  HoverCard,
   RippleButton,
 } from "@/components/animations/AnimationUtils";
 import { contentDictionary } from "@/lib/content-dictionary";
@@ -51,7 +50,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="relative pt-32 pb-24 overflow-hidden min-h-screen">
+    <div className="relative pt-28 md:pt-32 pb-20 md:pb-24 overflow-hidden min-h-screen">
       {/* ── BACKGROUND ────────────────────────────────────── */}
       <ParallaxLayer speed={-0.3} className="absolute inset-0 pointer-events-none z-0">
         <div className="ambient-glow-1 top-48 left-1/4 animate-drift" />
@@ -61,7 +60,7 @@ export default function Contact() {
       <FloatingElement amplitude={15} duration={5.5} className="absolute top-1/3 left-20 w-3 h-3 rounded-full bg-[#06599B]/60 hidden lg:block"><span /></FloatingElement>
 
       {/* ── MAIN GRID ─────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <section className="max-w-7xl mx-auto px-5 sm:px-6 md:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* ── LEFT COLUMN: INFO ─────────────────────────── */}
@@ -72,7 +71,7 @@ export default function Contact() {
                   Get In Touch
                 </span>
               </FadeIn>
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
                 <TextReveal text="Let's construct" className="block text-[#06599B]" delay={0.2} />
                 <TextReveal text="your project." className="block text-[#06599B]" delay={0.4} />
               </h1>

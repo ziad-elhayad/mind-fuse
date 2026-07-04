@@ -1,71 +1,55 @@
-"use client";
-
-import React, { useRef } from "react";
+import React, { memo } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { SERVICES, PROJECTS, METRICS, PARTNERS, getServiceIcon } from "@/lib/data";
+import Image from "next/image";
+import { SERVICES, PARTNERS } from "@/lib/data";
 import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import {
   TextReveal,
-  StaggerContainer,
-  StaggerItem,
   FadeIn,
   FloatingElement,
-  AnimatedCounter,
   ParallaxLayer,
-  HoverCard,
   RippleButton,
 } from "@/components/animations/AnimationUtils";
-import Marquee from "@/components/animations/Marquee";
 import { contentDictionary } from "@/lib/content-dictionary";
+import Services3DBackground from "@/components/3d/Services3DBackground";
+import ServiceCard3D from "@/components/3d/ServiceCard3D";
 
-const marqueeItems = [...contentDictionary.home.marquee];
-
-export default function Home() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-
+function Home() {
   return (
     <div className="relative overflow-hidden">
 
       {/* ── HERO ──────────────────────────────────────────── */}
-      <section
-        ref={heroRef}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      >
-        {/* Video Background */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0"
-        >
-          <source src="video/heroVideo/mindfuse-bakeground1.mp4" type="video/mp4" />
-        </video>
+      <section className="relative min-h-[100svh] pt-20 md:pt-0 flex items-center justify-center overflow-hidden">
+        {/* Optimized Static Hero Image Background */}
+        <Image
+          src="/hero_background.webp"
+          alt="MindFuse Premium Background"
+          fill
+          priority
+          className="object-cover z-0"
+          sizes="100vw"
+        />
 
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/35 to-white/40 z-0" />
 
         {/* Parallax bg glow layer */}
-        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0 z-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-tr from-[#06599B]/15 via-[#2D7FC0]/10 to-transparent blur-3xl animate-drift" />
-          <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-[#06599B]/10 blur-3xl animate-drift-slow" />
-        </motion.div>
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-gradient-to-tr from-[#06599B]/15 via-[#2D7FC0]/10 to-transparent blur-3xl animate-drift will-change-transform" />
+          <div className="absolute top-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-[#06599B]/10 blur-3xl animate-drift-slow will-change-transform" />
+        </div>
 
         {/* Floating decorative orbs */}
-        <FloatingElement amplitude={18} duration={6} delay={0} className="absolute top-32 left-16 w-3 h-3 rounded-full bg-[#06599B]/60 hidden lg:block"><span /></FloatingElement>
-        <FloatingElement amplitude={12} duration={4.5} delay={1} className="absolute top-48 right-24 w-2 h-2 rounded-full bg-[#2D7FC0]/60 hidden lg:block"><span /></FloatingElement>
-        <FloatingElement amplitude={20} duration={7} delay={0.5} className="absolute bottom-40 left-1/4 w-4 h-4 rounded-full bg-[#06599B]/40 hidden lg:block"><span /></FloatingElement>
-        <FloatingElement amplitude={14} duration={5} delay={2} className="absolute bottom-32 right-1/3 w-2 h-2 rounded-full bg-[#2D7FC0]/50 hidden lg:block"><span /></FloatingElement>
+        <FloatingElement amplitude={18} duration={6} delay={0} className="absolute top-32 left-16 w-3 h-3 rounded-full bg-[#06599B]/60 hidden lg:block will-change-transform"><span /></FloatingElement>
+        <FloatingElement amplitude={12} duration={4.5} delay={1} className="absolute top-48 right-24 w-2 h-2 rounded-full bg-[#2D7FC0]/60 hidden lg:block will-change-transform"><span /></FloatingElement>
+        <FloatingElement amplitude={20} duration={7} delay={0.5} className="absolute bottom-40 left-1/4 w-4 h-4 rounded-full bg-[#06599B]/40 hidden lg:block will-change-transform"><span /></FloatingElement>
+        <FloatingElement amplitude={14} duration={5} delay={2} className="absolute bottom-32 right-1/3 w-2 h-2 rounded-full bg-[#2D7FC0]/50 hidden lg:block will-change-transform"><span /></FloatingElement>
 
         {/* Slow-spinning ring decoration */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-dashed border-[#06599B]/10 animate-spin-slow pointer-events-none hidden lg:block" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full border border-dashed border-[#2D7FC0]/8 animate-spin-slow pointer-events-none hidden lg:block" style={{ animationDirection: "reverse", animationDuration: "90s" }} />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-dashed border-[#06599B]/10 animate-spin-slow pointer-events-none hidden lg:block will-change-transform" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full border border-dashed border-[#2D7FC0]/8 animate-spin-slow pointer-events-none hidden lg:block will-change-transform" style={{ animationDirection: "reverse", animationDuration: "90s" }} />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 pt-32 pb-24 grid grid-cols-1 gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 md:px-12 pt-16 md:pt-32 pb-20 md:pb-24 grid grid-cols-1 gap-12 items-center w-full">
 
           <div className="flex flex-col gap-8">
             {/* Badge */}
@@ -80,7 +64,7 @@ export default function Home() {
             </FadeIn>
 
             {/* Main headline with text reveal */}
-            <h1 className="text-5xl md:text-7xl font-black tracking-tight leading-[1.02]">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tight leading-[1.05] max-w-4xl">
               <TextReveal text={contentDictionary.home.hero.headline.line1} className="block text-[#06599B]" delay={0.15} />
             </h1>
 
@@ -114,16 +98,12 @@ export default function Home() {
         {/* Scroll indicator */}
         <FadeIn delay={1.2} className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
           <span className="text-[10px] text-[#1A1A1A] uppercase tracking-widest font-mono font-semibold">{contentDictionary.home.hero.scrollIndicator}</span>
-          <motion.div
-            className="w-px h-10 bg-gradient-to-b from-[#06599B] to-transparent"
-            animate={{ scaleY: [0, 1, 0], originY: 0 }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <div className="w-px h-10 bg-gradient-to-b from-[#06599B] to-transparent animate-pulse" />
         </FadeIn>
       </section>
 
       {/* ── ABOUT US ─────────────────────────────────────── */}
-      <section className="relative z-10 py-20 md:py-28 bg-[#E8F4FD]">
+      <section className="relative z-10 py-20 md:py-28 bg-[#E8F4FD] content-visibility-auto">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <FadeIn direction="left">
@@ -145,28 +125,33 @@ export default function Home() {
               </div>
             </FadeIn>
             <FadeIn direction="right" delay={0.2}>
-              <div className="relative">
-                <div className="aspect-square rounded-3xl bg-gradient-to-br from-[#E8F4FD] to-[#F0F8FF] border border-[#06599B]/15 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-tr from-[#06599B] to-[#2D7FC0] flex items-center justify-center text-white text-4xl font-bold">
-                      AN
-                    </div>
-                    <p className="text-[#06599B] font-semibold text-lg">AN Marketing Agency</p>
-                  </div>
-                </div>
+              <div className="relative w-full aspect-[4/3] lg:aspect-[4/5] rounded-3xl overflow-hidden shadow-[0_20px_50px_-12px_rgba(6,89,155,0.15)] group">
+                <Image
+                  src="/about_us.jpg"
+                  alt="AN Marketing Agency - Premium Concierge Service"
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 border border-white/20 rounded-3xl pointer-events-none z-10 mix-blend-overlay" />
+                <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-[#06599B]/10 pointer-events-none z-20" />
               </div>
             </FadeIn>
           </div>
         </div>
       </section>
 
-      {/* ── SERVICES ──────────────────────────────────────── */}
-      <section className="relative z-10 py-24">
+      {/* ── SERVICES ───────────────────────────────────────── */}
+      <section className="relative z-10 py-24 content-visibility-auto overflow-hidden">
+        {/* 3D Background */}
+        <Services3DBackground className="opacity-40" />
+        
         <ParallaxLayer speed={0.15} className="absolute inset-0 pointer-events-none">
           <div className="ambient-glow-2 top-1/2 -right-64" />
         </ParallaxLayer>
 
-        <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="flex flex-col gap-4">
               <FadeIn direction="left">
@@ -186,50 +171,19 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-8">
-            {SERVICES.map((service, index) => {
-              const Icon = getServiceIcon(service.iconName);
-              if (!Icon) {
-                console.warn(`Missing icon for service: ${service.title}, iconName: ${service.iconName}`);
-              }
-              return (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, x: -60 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ 
-                    duration: 0.6, 
-                    delay: index * 0.15,
-                    ease: [0.25, 0.46, 0.45, 0.94]
-                  }}
-                >
-                  <div className="glass-card shimmer-card rounded-2xl p-8 md:p-12 flex flex-col md:flex-row gap-8 items-center">
-                    <div className="flex-1 flex flex-col gap-4">
-                      <h3 className="text-2xl md:text-3xl font-bold text-[#06599B]">{service.title}</h3>
-                      <p className="text-[#6B7280] text-base leading-relaxed">{service.shortDescription}</p>
-                      <Link href={`/services/${service.slug}`} className="text-sm font-semibold uppercase tracking-wider text-[#06599B] hover:text-[#2D7FC0] transition-colors flex items-center gap-2 group/link w-fit mt-2">
-                        {contentDictionary.home.services.exploreButton} <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                      </Link>
-                    </div>
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.15 + 0.2 }}
-                      className={`w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-[#06599B] flex items-center justify-center text-white shadow-xl shrink-0`}
-                    >
-                      {Icon && <Icon className="w-12 h-12 md:w-16 md:h-16" />}
-                    </motion.div>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {SERVICES.map((service, index) => (
+              <ServiceCard3D
+                key={service.id}
+                service={service}
+                index={index}
+              />
+            ))}
           </div>
         </div>
       </section>
 
       {/* ── STRATEGIC TECHNOLOGY PARTNER ───────────────────── */}
-      <section className="relative z-10 py-20 md:py-28">
+      <section className="relative z-10 py-20 md:py-28 content-visibility-auto contain-layout">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="text-center max-w-2xl mx-auto mb-16 flex flex-col gap-4">
             <FadeIn direction="up">
@@ -246,10 +200,9 @@ export default function Home() {
           <div className="flex flex-col gap-8">
             {PARTNERS.map((partner, index) => (
               <FadeIn key={partner.id} delay={index * 0.1} direction="up">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                  className="group relative rounded-3xl border border-[#06599B]/15 bg-white/90 backdrop-blur-md overflow-hidden hover:border-[#06599B]/30 transition-all duration-500 p-8 md:p-16 flex flex-col md:flex-row items-center gap-8 md:gap-16 shimmer-card"
+                <div
+                  className="group relative rounded-3xl border border-[#06599B]/15 bg-white/90 backdrop-blur-md overflow-hidden hover:border-[#06599B]/30 hover:scale-[1.01] transition-all duration-500 p-6 sm:p-8 md:p-16 flex flex-col md:flex-row items-center gap-8 md:gap-16 shimmer-card"
+                  style={{ contain: 'layout style paint' }}
                 >
                   {/* Accent bar */}
                   <div className={`absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b ${partner.highlightColor} rounded-r-full`} />
@@ -258,15 +211,23 @@ export default function Home() {
 
                   {/* Logo */}
                   <div className="relative w-full md:w-48 h-32 flex items-center justify-center bg-white rounded-2xl border border-[#06599B]/10 group-hover:border-[#06599B]/20 transition-colors shrink-0">
-                    <img src={partner.logo} alt={partner.name} className="h-50 w-auto object-contain" />
+                    <Image
+                      src={partner.logo.replace('.jpeg', '.webp').replace('.jpg', '.webp')}
+                      alt={partner.name}
+                      width={192}
+                      height={80}
+                      className="h-20 w-auto object-contain"
+                      loading="lazy"
+                      sizes="192px"
+                    />
                   </div>
 
                   {/* Content */}
-                  <div className="flex-1 flex flex-col gap-4">
+                  <div className="flex-1 flex flex-col gap-4 min-w-0 text-center md:text-left">
                     <h3 className="text-3xl md:text-4xl font-bold text-[#06599B] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#06599B] group-hover:to-[#2D7FC0] transition-all duration-300">
                       {partner.name}
                     </h3>
-                    <p className="text-[#6B7280] text-lg leading-relaxed">{partner.description}</p>
+                    <p className="text-[#6B7280] text-base md:text-lg leading-relaxed">{partner.description}</p>
                   </div>
 
                   {/* CTA Button */}
@@ -279,7 +240,7 @@ export default function Home() {
                     {contentDictionary.partner.visitButton}
                     <ArrowUpRight className="w-5 h-5 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                   </Link>
-                </motion.div>
+                </div>
               </FadeIn>
             ))}
           </div>
@@ -287,7 +248,7 @@ export default function Home() {
       </section>
 
       {/* ── WHY AN MARKETING AGENCY ───────────────────────── */}
-      <section className="relative z-10 py-20 md:py-28">
+      <section className="relative z-10 py-20 md:py-28 content-visibility-auto contain-layout">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <div className="text-center max-w-2xl mx-auto mb-16 flex flex-col gap-4">
             <FadeIn direction="up">
@@ -328,10 +289,10 @@ export default function Home() {
       </section>
 
       {/* ── BOTTOM CTA ────────────────────────────────────── */}
-      <section className="relative z-10 py-12 pb-24">
+      <section className="relative z-10 py-12 pb-24 content-visibility-auto contain-layout">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           <FadeIn direction="up">
-            <div className="relative p-12 md:p-16 rounded-3xl border border-[#06599B]/15 bg-gradient-to-br from-[#06599B] via-[#044A80] to-[#06599B] overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 animate-border-glow">
+            <div className="relative p-8 sm:p-10 md:p-16 rounded-3xl border border-[#06599B]/15 bg-gradient-to-br from-[#06599B] via-[#044A80] to-[#06599B] overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 animate-border-glow">
               {/* Decorative glow */}
               <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-[#2D7FC0]/20 blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />
 
@@ -361,3 +322,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default memo(Home);

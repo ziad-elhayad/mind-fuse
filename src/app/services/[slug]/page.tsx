@@ -8,7 +8,6 @@ import {
   StaggerContainer,
   StaggerItem,
   FadeIn,
-  FloatingElement,
   ParallaxLayer,
   HoverCard,
   RippleButton,
@@ -37,14 +36,14 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   return (
     <div className="relative overflow-hidden">
       {/* ── HEADER & NAVIGATION ───────────────────────────── */}
-      <section className="relative pt-32 pb-16 min-h-[60vh] flex flex-col justify-center">
+      <section className="relative pt-28 md:pt-32 pb-14 md:pb-16 min-h-[60vh] flex flex-col justify-center">
         {/* Parallax Background */}
         <ParallaxLayer speed={-0.3} className="absolute inset-0 pointer-events-none z-0">
           <div className={`absolute top-1/4 -left-32 w-[600px] h-[600px] rounded-full bg-gradient-to-tr ${service.highlightColor} opacity-[0.1] blur-3xl animate-drift`} />
           <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-brand-cyan/[0.08] blur-3xl animate-drift-slow" />
         </ParallaxLayer>
 
-        <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-12 relative z-10 w-full">
           <FadeIn direction="left" delay={0.1}>
             <Link
               href="/services"
@@ -59,11 +58,11 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             <div className="lg:col-span-8 flex flex-col gap-6">
               <FadeIn delay={0.2} direction="up">
                 <div className={`w-16 h-16 rounded-2xl bg-gradient-to-tr ${service.highlightColor} flex items-center justify-center text-white shadow-[0_0_30px_rgba(255,255,255,0.1)]`}>
-                  <Icon className="w-8 h-8" />
+                  {React.createElement(Icon, { className: "w-8 h-8" })}
                 </div>
               </FadeIn>
 
-              <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
                 <TextReveal text={service.title} className="block text-white" delay={0.3} />
               </h1>
 

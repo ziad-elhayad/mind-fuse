@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { SERVICES } from "@/lib/data";
 import { ArrowUpRight } from "lucide-react";
 import { contentDictionary } from "@/lib/content-dictionary";
 
-export default function Footer() {
+function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -21,7 +22,14 @@ export default function Footer() {
           <div className="flex flex-col gap-6">
             <Link href="/" className="flex items-center gap-3 group w-fit">
               <div className="relative w-36 h-12 flex items-center group-hover:scale-105 transition-transform duration-300">
-                <img src="/mindFuseLogo.png" alt={contentDictionary.navigation.logoAlt} className="w-full h-full object-contain object-left" />
+                <Image 
+                  src="/mindFuseLogo.webp" 
+                  alt={contentDictionary.navigation.logoAlt} 
+                  width={144}
+                  height={48}
+                  className="w-full h-full object-contain object-left"
+                  sizes="144px"
+                />
               </div>
             </Link>
             <p className="text-white/80 text-sm leading-relaxed max-w-sm">
@@ -92,6 +100,8 @@ export default function Footer() {
             <form onSubmit={(e) => e.preventDefault()} className="relative mt-2">
               <input
                 type="email"
+                required
+                aria-label={contentDictionary.footer.newsletter.placeholder}
                 placeholder={contentDictionary.footer.newsletter.placeholder}
                 className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-sm text-white placeholder-white/50 focus:outline-none focus:border-[#2D7FC0]/50 focus:ring-1 focus:ring-[#2D7FC0]/20 transition-all duration-300"
               />
@@ -117,3 +127,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default memo(Footer);

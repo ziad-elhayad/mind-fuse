@@ -26,6 +26,7 @@
 
 html {
   scroll-behavior: smooth;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -34,6 +35,26 @@ body {
   overflow-x: hidden;
   font-family: var(--font-sans);
   cursor: none; /* hide default cursor — replaced by custom cursor */
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  will-change: auto;
+}
+
+/* Prefers-reduced-motion support for accessibility and performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Restore default cursor on touch devices */
@@ -64,7 +85,8 @@ body {
 .glass-card:hover {
   border-color: rgba(6, 89, 155, 0.35);
   box-shadow: 0 20px 40px -12px rgba(6, 89, 155, 0.15);
-  transform: translateY(-4px);
+  transform: translate3d(0, -4px, 0);
+  will-change: transform, border-color, box-shadow;
 }
 
 /* ─── Gradient Text ─────────────────────────────────── */
@@ -140,24 +162,15 @@ body {
   50%       { box-shadow: 0 0 0 12px rgba(6, 89, 155, 0); }
 }
 
-/* Shimmer sweep */
+/* Shimmer sweep - GPU accelerated */
 @keyframes shimmer {
-  100% { transform: translateX(100%); }
+  100% { transform: translate3d(100%, 0, 0); }
 }
 
-/* Spin slow */
+
+/* Spin slow - GPU accelerated */
 @keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
-
-/* Horizontal scroll for marquee (CSS fallback) */
-@keyframes marquee-left {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-@keyframes marquee-right {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  to { transform: rotateZ(360deg); }
 }
 
 /* Gradient shift for hero bg */
@@ -178,15 +191,15 @@ body {
   100% { background-position: 200% center; }
 }
 
-/* Float gentle */
+/* Float gentle - GPU accelerated */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50%       { transform: translateY(-14px); }
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%       { transform: translate3d(0, -14px, 0); }
 }
 
-/* Ping scale */
+/* Ping scale - GPU accelerated */
 @keyframes ping-scale {
-  75%, 100% { transform: scale(2); opacity: 0; }
+  75%, 100% { transform: scale3d(2, 2, 1); opacity: 0; }
 }
 
 /* ─── Animation Utility Classes ─────────────────────── */
@@ -229,6 +242,7 @@ body {
   );
   transition: none;
   pointer-events: none;
+  will-change: transform;
 }
 .shimmer-card:hover::after {
   animation: shimmer 1.2s ease-out forwards;
@@ -244,7 +258,8 @@ body {
 }
 .image-zoom:hover img,
 .image-zoom:hover > div {
-  transform: scale(1.06);
+  transform: scale3d(1.06, 1.06, 1);
+  will-change: transform;
 }
 
 /* ─── Section gradient separator ───────────────────── */
@@ -264,10 +279,26 @@ body {
   transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease;
 }
 .btn-primary:hover {
-  transform: translateY(-2px);
+  transform: translate3d(0, -2px, 0);
   filter: brightness(1.08);
   box-shadow: 0 12px 30px -8px rgba(6, 89, 155, 0.35);
+  /* Only promote to GPU layer on hover — not constantly */
+  will-change: transform, box-shadow, filter;
 }
 .btn-primary:active {
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+
+/* ─── Content Visibility ────────────────────────────────── */
+/* Used on below-the-fold sections to skip rendering off-screen */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px; /* estimated height avoids CLS */
+}
+
+/* ─── Font rendering ─────────────────────────────────────── */
+/* Apply only to headings — body text does not need subpixel AA */
+h1, h2, h3, h4, h5, h6 {
+  text-rendering: geometricPrecision;
 }

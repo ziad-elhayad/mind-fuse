@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Legacy utility scripts in project root (CommonJS, not part of the app bundle)
+    "replace_colors.js",
+    "scripts/**",
   ]),
 ]);
 

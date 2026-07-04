@@ -1,7 +1,17 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, useSpring, animate } from "framer-motion";
+import React, { useEffect, useRef, useState, memo } from "react";
+import {
+  motion,
+  useInView,
+  animate,
+  useScroll,
+  useTransform,
+  type Variants,
+} from "framer-motion";
+
+// ─── Shared easing ───────────────────────────────────────────────────
+const EASE_OUT_CUBIC: [number, number, number, number] = [0.33, 1, 0.68, 1];
 
 // ─── Animated Counter ───────────────────────────────────────────────
 interface CounterProps {
@@ -13,7 +23,7 @@ interface CounterProps {
   className?: string;
 }
 
-export function AnimatedCounter({
+function AnimatedCounterBase({
   from = 0,
   to,
   suffix = "",
@@ -39,10 +49,13 @@ export function AnimatedCounter({
 
   return (
     <span ref={ref} className={className}>
-      {prefix}{display}{suffix}
+      {prefix}
+      {display}
+      {suffix}
     </span>
   );
 }
+export const AnimatedCounter = memo(AnimatedCounterBase);
 
 // ─── Text Reveal Animation ───────────────────────────────────────────
 interface TextRevealProps {
@@ -52,7 +65,7 @@ interface TextRevealProps {
   as?: "h1" | "h2" | "h3" | "p" | "span";
 }
 
-export function TextReveal({
+function TextRevealBase({
   text,
   className = "",
   delay = 0,
@@ -71,7 +84,7 @@ export function TextReveal({
             transition={{
               duration: 0.7,
               delay: delay + i * 0.06,
-              ease: [0.33, 1, 0.68, 1],
+              ease: EASE_OUT_CUBIC,
             }}
           >
             {word}
@@ -81,8 +94,30 @@ export function TextReveal({
     </Tag>
   );
 }
+export const TextReveal = memo(TextRevealBase);
 
 // ─── Stagger Container ───────────────────────────────────────────────
+
+// Variants defined outside component — never recreated on re-render
+const staggerContainerVariants: Variants = {
+  hidden: {},
+  visible: (custom: { staggerDelay: number; initialDelay: number }) => ({
+    transition: {
+      staggerChildren: custom.staggerDelay,
+      delayChildren: custom.initialDelay,
+    },
+  }),
+};
+
+const staggerItemVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: EASE_OUT_CUBIC },
+  },
+};
+
 interface StaggerContainerProps {
   children: React.ReactNode;
   className?: string;
@@ -90,7 +125,7 @@ interface StaggerContainerProps {
   initialDelay?: number;
 }
 
-export function StaggerContainer({
+function StaggerContainerBase({
   children,
   className = "",
   staggerDelay = 0.1,
@@ -102,22 +137,16 @@ export function StaggerContainer({
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-80px" }}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: staggerDelay,
-            delayChildren: initialDelay,
-          },
-        },
-      }}
+      variants={staggerContainerVariants}
+      custom={{ staggerDelay, initialDelay }}
     >
       {children}
     </motion.div>
   );
 }
+export const StaggerContainer = memo(StaggerContainerBase);
 
-export function StaggerItem({
+function StaggerItemBase({
   children,
   className = "",
 }: {
@@ -125,31 +154,35 @@ export function StaggerItem({
   className?: string;
 }) {
   return (
-    <motion.div
-      className={className}
-      variants={{
-        hidden: { opacity: 0, y: 40 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.33, 1, 0.68, 1] } },
-      }}
-    >
+    <motion.div className={className} variants={staggerItemVariants}>
       {children}
     </motion.div>
   );
 }
+export const StaggerItem = memo(StaggerItemBase);
 
 // ─── Parallax Section ────────────────────────────────────────────────
-import { useScroll, useTransform } from "framer-motion";
-
 interface ParallaxLayerProps {
   children: React.ReactNode;
-  speed?: number; // -1 to 1, negative = slower, positive = faster
+  speed?: number;
   className?: string;
 }
 
-export function ParallaxLayer({ children, speed = 0.5, className = "" }: ParallaxLayerProps) {
+function ParallaxLayerBase({
+  children,
+  speed = 0.5,
+  className = "",
+}: ParallaxLayerProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], [`${-speed * 80}px`, `${speed * 80}px`]);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [`${-speed * 80}px`, `${speed * 80}px`]
+  );
 
   return (
     <motion.div ref={ref} style={{ y }} className={className}>
@@ -157,8 +190,39 @@ export function ParallaxLayer({ children, speed = 0.5, className = "" }: Paralla
     </motion.div>
   );
 }
+export const ParallaxLayer = memo(ParallaxLayerBase);
 
 // ─── Fade In On Scroll ───────────────────────────────────────────────
+
+// Variant factories — cached per unique direction+distance combo
+const fadeVariantCache = new Map<string, Variants>();
+
+function getFadeVariants(direction: string, distance: number): Variants {
+  const key = `${direction}-${distance}`;
+  if (fadeVariantCache.has(key)) return fadeVariantCache.get(key)!;
+
+  const dirMap: Record<string, { x: number; y: number }> = {
+    up: { y: distance, x: 0 },
+    down: { y: -distance, x: 0 },
+    left: { x: distance, y: 0 },
+    right: { x: -distance, y: 0 },
+    none: { x: 0, y: 0 },
+  };
+
+  const variants: Variants = {
+    hidden: { opacity: 0, ...dirMap[direction] },
+    visible: {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      transition: { duration: 0.7, ease: EASE_OUT_CUBIC },
+    },
+  };
+
+  fadeVariantCache.set(key, variants);
+  return variants;
+}
+
 interface FadeInProps {
   children: React.ReactNode;
   className?: string;
@@ -167,35 +231,29 @@ interface FadeInProps {
   distance?: number;
 }
 
-export function FadeIn({
+function FadeInBase({
   children,
   className = "",
   delay = 0,
   direction = "up",
   distance = 30,
 }: FadeInProps) {
-  const dirMap = {
-    up: { y: distance, x: 0 },
-    down: { y: -distance, x: 0 },
-    left: { x: distance, y: 0 },
-    right: { x: -distance, y: 0 },
-    none: { x: 0, y: 0 },
-  };
-  const initial = { opacity: 0, ...dirMap[direction] };
-  const animate = { opacity: 1, x: 0, y: 0 };
+  const variants = getFadeVariants(direction, distance);
 
   return (
     <motion.div
       className={className}
-      initial={initial}
-      whileInView={animate}
+      initial="hidden"
+      whileInView="visible"
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay, ease: [0.33, 1, 0.68, 1] }}
+      variants={variants}
+      transition={{ duration: 0.7, delay, ease: EASE_OUT_CUBIC }}
     >
       {children}
     </motion.div>
   );
 }
+export const FadeIn = memo(FadeInBase);
 
 // ─── Floating Element ────────────────────────────────────────────────
 interface FloatingProps {
@@ -206,7 +264,12 @@ interface FloatingProps {
   delay?: number;
 }
 
-export function FloatingElement({
+// Floating animation values are computed outside to avoid object recreation
+function getFloatingAnimation(amplitude: number) {
+  return { y: [0, -amplitude, 0] as [number, number, number] };
+}
+
+function FloatingElementBase({
   children,
   amplitude = 12,
   duration = 4,
@@ -216,7 +279,7 @@ export function FloatingElement({
   return (
     <motion.div
       className={className}
-      animate={{ y: [0, -amplitude, 0] }}
+      animate={getFloatingAnimation(amplitude)}
       transition={{
         duration,
         delay,
@@ -228,6 +291,7 @@ export function FloatingElement({
     </motion.div>
   );
 }
+export const FloatingElement = memo(FloatingElementBase);
 
 // ─── Scale on Hover Card ─────────────────────────────────────────────
 interface HoverCardProps {
@@ -237,7 +301,7 @@ interface HoverCardProps {
   lift?: number;
 }
 
-export function HoverCard({
+function HoverCardBase({
   children,
   className = "",
   scale = 1.03,
@@ -253,15 +317,23 @@ export function HoverCard({
     </motion.div>
   );
 }
+export const HoverCard = memo(HoverCardBase);
 
 // ─── Page Transition Wrapper ─────────────────────────────────────────
+const pageTransitionVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
+
 export function PageTransition({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.5, ease: [0.33, 1, 0.68, 1] }}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={pageTransitionVariants}
+      transition={{ duration: 0.5, ease: EASE_OUT_CUBIC }}
     >
       {children}
     </motion.div>
@@ -274,7 +346,12 @@ interface RippleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
   className?: string;
 }
 
-export function RippleButton({ children, className = "", onClick, ...props }: RippleButtonProps) {
+function RippleButtonBase({
+  children,
+  className = "",
+  onClick,
+  ...props
+}: RippleButtonProps) {
   const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -283,7 +360,10 @@ export function RippleButton({ children, className = "", onClick, ...props }: Ri
     const y = e.clientY - rect.top;
     const id = Date.now();
     setRipples((prev) => [...prev, { x, y, id }]);
-    setTimeout(() => setRipples((prev) => prev.filter((r) => r.id !== id)), 700);
+    setTimeout(
+      () => setRipples((prev) => prev.filter((r) => r.id !== id)),
+      700
+    );
     onClick?.(e);
   };
 
@@ -307,8 +387,14 @@ export function RippleButton({ children, className = "", onClick, ...props }: Ri
     </button>
   );
 }
+export const RippleButton = memo(RippleButtonBase);
 
 // ─── Section Divider Scroll Animation ────────────────────────────────
+const scrollRevealVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.8 } },
+} satisfies Variants;
+
 export function ScrollRevealSection({
   children,
   className = "",
@@ -319,10 +405,10 @@ export function ScrollRevealSection({
   return (
     <motion.section
       className={className}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
+      initial="hidden"
+      whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8 }}
+      variants={scrollRevealVariants}
     >
       {children}
     </motion.section>

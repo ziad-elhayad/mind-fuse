@@ -1,20 +1,31 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import MouseFollowCursor from "@/components/animations/MouseFollowCursor";
-import LoadingScreen from "@/components/animations/LoadingScreen";
-import SmoothScroll from "@/components/animations/SmoothScroll";
+import dynamic from "next/dynamic";
 import "./globals.css";
+import ClientShell from "@/components/ClientShell";
 
+// Navbar can SSR (it has no browser-only deps besides scroll detection which
+// degrades gracefully) — renders instantly without flash
+const Navbar = dynamic(() => import("@/components/Navbar"), {
+  ssr: true,
+  loading: () => <div className="h-20" aria-hidden="true" />,
+});
+
+// Primary font — preloaded to prevent FOUT on initial paint
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
+// Mono font — secondary, no preload needed
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -33,6 +44,14 @@ export const metadata: Metadata = {
   },
 };
 
+// viewport is a separate export per Next.js 14+ spec
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#06599B",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,27 +60,28 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-      <body className="min-h-full bg-[#030303] text-[#f3f4f6] flex flex-col selection:bg-brand-primary/30 selection:text-white">
-        <SmoothScroll>
-          {/* Loading screen — unmounts after ~1.4s */}
-          <LoadingScreen />
+      <head>
+        {/* Preconnect so font requests start immediately on parse */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+      </head>
+      <body className="bg-[#E8F4FD] text-[#1A1A1A] selection:bg-[#06599B]/30 selection:text-[#06599B] flex flex-col min-h-screen">
+        {/* Navbar renders server-side — no layout shift */}
+        <Navbar />
 
-          {/* Custom cursor (hidden on mobile) */}
-          <MouseFollowCursor />
-
-          {/* Subtle global grid overlay */}
-          <div className="fixed inset-0 grid-overlay opacity-[0.35] pointer-events-none z-0" />
-
-          {/* Animated drifting glows that span the full page */}
-          <div className="fixed top-[-200px] left-[-200px] w-[700px] h-[700px] rounded-full bg-brand-primary/[0.06] blur-3xl pointer-events-none z-0 animate-drift" />
-          <div className="fixed bottom-[-200px] right-[-200px] w-[700px] h-[700px] rounded-full bg-brand-secondary/[0.05] blur-3xl pointer-events-none z-0 animate-drift-slow" />
-
-          <Navbar />
-          <main className="flex-grow relative z-10">{children}</main>
-          <Footer />
-        </SmoothScroll>
+        {/*
+         * ClientShell holds all ssr:false components (SmoothScroll, LoadingScreen,
+         * MouseFollowCursor, Footer) — wrapped in a 'use client' boundary
+         * so Next.js App Router allows the ssr:false dynamic imports.
+         */}
+        <ClientShell>{children}</ClientShell>
       </body>
     </html>
   );

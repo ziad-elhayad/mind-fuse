@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 import { contentDictionary } from "@/lib/content-dictionary";
 
-export default function LoadingScreen() {
+function LoadingScreen() {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
@@ -48,7 +49,15 @@ export default function LoadingScreen() {
             className="flex flex-col items-center gap-4"
           >
             <div className="w-64 h-24 flex items-center justify-center relative">
-              <img src="/mindFuseLogo.png" alt={contentDictionary.navigation.logoAlt} className="w-full h-full object-contain" />
+              <Image 
+                src="/mindFuseLogo.webp" 
+                alt={contentDictionary.navigation.logoAlt} 
+                width={256}
+                height={96}
+                className="w-full h-full object-contain"
+                priority
+                sizes="256px"
+              />
             </div>
           </motion.div>
 
@@ -79,3 +88,5 @@ export default function LoadingScreen() {
     </AnimatePresence>
   );
 }
+
+export default memo(LoadingScreen);

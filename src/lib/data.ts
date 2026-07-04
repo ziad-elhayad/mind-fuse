@@ -335,7 +335,7 @@ export function getServiceIcon(name: string) {
     case 'Compass': return Compass;
     case 'LineChart': return LineChart;
     case 'Megaphone': return Megaphone;
-    default: console.warn(`Unknown icon name: ${name}`); return Lightbulb;
+    default: return Lightbulb;
   }
 }
 
@@ -350,3 +350,4 @@ export const PARTNERS: Partner[] = [
     highlightColor: "from-[#06599B] to-[#2D7FC0]"
   }
 ];
+

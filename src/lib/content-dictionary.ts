@@ -147,8 +147,8 @@ export const contentDictionary = {
   about: {
     hero: {
       sectionLabel: "About Us",
-      title: "Mind Fuse Agency",
-      description: "Mind Fuse Agency is a 360° marketing agency providing fully integrated marketing solutions designed to help brands grow, scale, and compete in today's fast-moving digital landscape. We don't believe in isolated tactics or short-term wins. Instead, we build complete marketing ecosystems that align strategy, creativity, technology, and performance to achieve real business results.",
+      title: "AN Marketing Agency",
+      description: "AN Marketing Agency is a 360° marketing agency providing fully integrated marketing solutions designed to help brands grow, scale, and compete in today's fast-moving digital landscape. We don't believe in isolated tactics or short-term wins. Instead, we build complete marketing ecosystems that align strategy, creativity, technology, and performance to achieve real business results.",
     },
     mission: {
       title: "Our Mission",

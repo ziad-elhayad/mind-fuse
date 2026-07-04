@@ -1,33 +1,41 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
 
-export default function SmoothScroll({ children }: { children: React.ReactNode }) {
+function SmoothScroll({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Initialize Lenis for buttery smooth scrolling
+    const shouldUseNativeScroll =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      window.matchMedia("(hover: none), (pointer: coarse)").matches;
+
+    if (shouldUseNativeScroll) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 0.9,
+      touchMultiplier: 1,
+      autoResize: true,
     });
 
+    let rafId: number;
     // We need to keep framer-motion and lenis synced
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
     };
   }, []);
@@ -37,5 +45,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  return <>{children}</>;
+  return <div className="w-full min-h-full">{children}</div>;
 }
+
+export default memo(SmoothScroll);
